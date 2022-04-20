@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
@@ -17,6 +17,11 @@ import { FullLayoutComponent } from './layouts/full-layout/full-layout.component
 
 import { NgChartjsModule } from 'ng-chartjs';
 import { ThemeConstantService } from './shared/services/theme-constant.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './shared/interceptor/token.interceptor';
+import { GlobalHttpInterceptor } from './shared/interceptor/global-http-interceptor';
+import { GlobalErrorHandler } from './shared/interceptor/global-error-handler';
+import { AuthenticationService } from './shared/services/authentication.service';
 
 registerLocaleData(en);
 
@@ -36,15 +41,30 @@ registerLocaleData(en);
         NgChartjsModule
     ],
     providers: [
-        { 
+        {
             provide: NZ_I18N,
-            useValue: en_US, 
+            useValue: en_US,
         },
         {
-            provide: LocationStrategy, 
+            provide: LocationStrategy,
             useClass: PathLocationStrategy
         },
-        ThemeConstantService
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
+            multi: true
+        },
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandler
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: GlobalHttpInterceptor,
+            multi: true
+        },
+        ThemeConstantService,
+        AuthenticationService
     ],
     bootstrap: [AppComponent]
 })

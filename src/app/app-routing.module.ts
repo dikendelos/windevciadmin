@@ -6,22 +6,24 @@ import { CommonLayoutComponent } from "./layouts/common-layout/common-layout.com
 
 import { FullLayout_ROUTES } from "./shared/routes/full-layout.routes";
 import { CommonLayout_ROUTES } from "./shared/routes/common-layout.routes";
+import { AuthGuard } from './shared/guard/auth.guard';
 
 const appRoutes: Routes = [
-    {
-        path: '',
-        redirectTo: '/authentication/login-1',
-        pathMatch: 'full',
-    },
     // {
     //     path: '',
-    //     redirectTo: '/dashboard/default',
+    //     redirectTo: '/authentication/login-1',
     //     pathMatch: 'full',
     // },
+    {
+        path: '',
+        redirectTo: '/dashboard/default',
+        pathMatch: 'full',
+    },
     { 
         path: '', 
         component: CommonLayoutComponent,
-        children: CommonLayout_ROUTES 
+        children: CommonLayout_ROUTES,
+        canActivate: [AuthGuard]
     },
     { 
         path: '', 
