@@ -52,7 +52,7 @@ const routes: Routes = [
         }
     },
     {
-        path: 'utilisateur',
+        path: 'utilisateurs',
         component: UtilisateurComponent,
         data: {
             title: 'Gestion des utilisateurs',
