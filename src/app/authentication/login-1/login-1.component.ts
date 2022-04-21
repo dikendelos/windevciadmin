@@ -47,7 +47,7 @@ export class Login1Component {
             .subscribe({
                 next: (data) => {
 
-                    const returnUrl = '/dashboard';
+                    const returnUrl = 'dashboard/default';
                     console.log('returnUrl : ', returnUrl);
                     this.router.navigateByUrl(returnUrl);
                     console.log('data : ', data);

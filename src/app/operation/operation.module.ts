@@ -22,9 +22,25 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { IconDefinition } from '@ant-design/icons-angular';
+import { LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
 // import { ProjectsDashboardComponent } from './projects/projects-dashboard.component';
 import { LicencesComponent } from './licences/licences.component';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const antdModule = [
     NzButtonModule,
@@ -42,13 +58,25 @@ const antdModule = [
     NzListModule,
     NzCalendarModule,
     NzToolTipModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzIconModule.forRoot(icons),
+    NzGridModule,
+    NzAffixModule,
+    NzMenuModule,
+    NzI18nModule,
+    NzSelectModule,
+    NzMessageModule,
+    NzPopoverModule,
+    NzInputModule,
+    NzFormModule,
+    NzPopconfirmModule
 ]
 
 @NgModule({
     imports: [
         CommonModule,
         SharedModule,
+        ReactiveFormsModule,
         OperationRoutingModule,
         NgChartjsModule,
         ...antdModule
