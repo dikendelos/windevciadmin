@@ -8,28 +8,27 @@
         </div>
         </div>
     </div>
-    <nz-card>
-        <form nz-form [formGroup]="dataForm" nzLayout="inline" (ngSubmit)="addRow()">
-            <nz-form-item>
-                <nz-form-label nzRequired nzFor="userName">Libelle</nz-form-label>
-                <nz-form-control nzErrorTip="Veuillez saisir le libelle!">
-                    <input type="text" nz-input formControlName="libelle" placeholder="libelle">
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-label nzRequired nzFor="description">Description</nz-form-label>
-                <nz-form-control nzErrorTip="Veuillez saisir la description !">
-                    <input type="text" nz-input formControlName="description" placeholder="description">
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <button nz-button nzType="primary">Ajouter</button>
-            </nz-form-item>
-        </form>
-        <!-- <button nz-button (click)="addRow()" nzType="primary">Ajouter</button> -->
-    </nz-card>
-
-
+</div>
+<nz-card>
+    <form nz-form [formGroup]="dataForm" nzLayout="inline" (ngSubmit)="addRow()">
+        <nz-form-item>
+            <nz-form-label nzRequired nzFor="userName">Libelle</nz-form-label>
+            <nz-form-control nzErrorTip="Veuillez saisir le libelle!">
+                <input type="text" nz-input formControlName="libelle" placeholder="libelle">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired nzFor="description">Description</nz-form-label>
+            <nz-form-control nzErrorTip="Veuillez saisir la description !">
+                <input type="text" nz-input formControlName="description" placeholder="description">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <button nz-button nzType="primary">Ajouter</button>
+        </nz-form-item>
+    </form>
+    <!-- <button nz-button (click)="addRow()" nzType="primary">Ajouter</button> -->
+</nz-card>
 <div class="row">
     <div class="col-lg">
         <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">
@@ -68,6 +67,7 @@
         </nz-table>
     </div>
 </div>
+
 <!-- <div class="row">
     <div class="col-lg-8">
         <nz-card>

@@ -9,118 +9,96 @@
         </div>
     </div>
 </div>
-<!-- <div class="row">
-    <div class="col-lg-8">
-        <nz-card>
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Project Completion </h5>
-                <div>
-                    <a class="text-dark font-size-20" nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'" [nzDropdownMenu]="projectCompletionDropDown">
-                        <i nz-icon nzType="ellipsis" theme="outline"></i>
-                    </a>
-                    <nz-dropdown-menu #projectCompletionDropDown="nzDropdownMenu">
-                        <ul nz-menu>
-                            <li nz-menu-item>
-                                <i nz-icon nzType="printer" theme="outline"></i>
-                                <span class="m-l-5">Print</span>
-                            </li>
-                            <li nz-menu-item>
-                                <i nz-icon nzType="download" theme="outline"></i>
-                                <span class="m-l-5">Download</span>
-                            </li>
-                            <li nz-menu-item>
-                                <i nz-icon nzType="file-excel" theme="outline"></i>
-                                <span class="m-l-5">Export</span>
-                            </li>
-                            <li nz-menu-item>
-                                <i nz-icon nzType="reload" theme="outline"></i>
-                                <span class="m-l-5">Refresh</span>
-                            </li>
-                        </ul>
-                    </nz-dropdown-menu>
-                </div>
-            </div>
-            <div class="d-md-flex justify-content-space m-t-50">
-                <div class="completion-chart p-r-10" style="height: 330px">
-                    <canvas ngChartjs #completionChart
-                        [datasets]="completionChartData" 
-                        [labels]="completionChartLabels"
-                        [options]="completionChartOptions" 
-                        [colors]="completionChartColors" 
-                        [legend]="false"
-                        [chartType]="completionChartType">
-                    </canvas>
-                </div>
-                <div class="calendar-card border-0">
-                    <nz-calendar [nzFullscreen]="false"></nz-calendar> 
-                </div>
-            </div>
-        </nz-card>
+<nz-card>
+    <form nz-form [formGroup]="dataForm" nzLayout="vertical" (ngSubmit)="addRow()">
+        <div class="row">
+            <nz-form-item class="col-md-3">
+                <nz-form-label nzRequired nzFor="nom_produit">Designation</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir la designation!">
+                    <input type="text" nz-input formControlName="nom_produit" placeholder="Designation">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="col-md-3">
+                <nz-form-label nzRequired nzFor="description">Description</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir la description!">
+                    <input type="text" nz-input formControlName="description" placeholder="description">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="col-md-3">
+                <nz-form-label nzRequired nzFor="description">Licence</nz-form-label>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence"  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue" >
+                    <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                </nz-select>
+                <input type="hidden" [(ngModel)]="selectedValue" formControlName="licence_id" >
+            </nz-form-item>
+            <nz-form-item class="col-md-3">
+                <nz-form-label nzRequired nzFor="extrat_titre">Extrait de titre</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir l'extrait de titre!">
+                    <input type="text" nz-input formControlName="extrat_titre" placeholder="Extrait de titre">
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="row">&nbsp;</div>
+        <button style="position:absolute; right: 25px; bottom: 10px;" nz-button nzType="primary">Ajouter</button>
+        <!-- <div class="row">
+            <nz-form-item class="col">
+                <button style="position:absolute; right: 10px;" nz-button nzType="primary">Ajouter</button>
+            </nz-form-item>
+        </div> -->
+    </form>
+    <!-- <button nz-button (click)="addRow()" nzType="primary">Ajouter</button> -->
+</nz-card>
+<div class="row">
+    <div class="col-lg">
+        <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">
+            <thead>
+                <tr>
+                    <!-- <th nzWidth="25%" >Id</th> -->
+                    <th nzWidth="25%">Designation</th>
+                    <th nzWidth="25%">description</th>
+                    <th nzWidth="25%">Licence</th>
+                    <th nzWidth="25%">Extrait de titre</th>
+                    <th nzWidth="10%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of editRowTable.data">
+                    <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+                        <!-- <td>{{ data.id }}</td> -->
+                        <td>{{ data.nom_produit }}</td>
+                        <td>{{ data.description }}</td>
+                        <td>{{ data.lience }}</td>
+                        <td>{{ data.extrat_titre }}</td>
+                        <td>
+                            <a (click)="startEdit(data.id)">Edit</a> &nbsp;
+                            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?"
+                                (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+                        </td>
+                    </ng-container>
+                    <ng-template #editTemplate>
+                        <!-- <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.id" /></td> -->
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.nom_produit" /></td>
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.description" /></td>
+                        <td>
+                            <!-- <input type="text" nz-input [(ngModel)]="editCache[data.id].data.licence_id" /> -->
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence" 
+                                [(ngModel)]="editCache[data.id].data.licence_id" (ngModelChange)="setValeurAffichee($event, data.id)">
+                                <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                            </nz-select>
+                        </td> 
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.extrat_titre" /></td> 
+                        <td>
+                            <a (click)="saveEdit(data.id)" class="save">Save</a>
+                            <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
+                                (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+                        </td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </nz-table>
     </div>
-    <div class="col-lg-4">
-        <nz-card>
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Team Members</h5>
-                <div>
-                    <a nz-button nzSize="small">View All</a> 
-                </div>
-            </div>
-            <div class="m-t-30">
-                <div class="avatar-text m-l-5">
-                    <a nz-tooltip [nzTooltipTitle]="item.name" *ngFor="let item of memberList">
-                        <nz-avatar [nzSize]="35" [nzSrc]="item.img" nzIcon="user"></nz-avatar>
-                    </a>
-                    <a nz-tooltip nzTooltipTitle="Add Member">
-                        <nz-avatar class="ant-avatar-blue" [nzSize]="35" nzIcon="plus"></nz-avatar>
-                    </a>
-                </div>
-            </div>
-        </nz-card>
-        <nz-card>
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Upcoming Meeting</h5>
-                <div>
-                    <a nz-button nzSize="small">View All</a> 
-                </div>
-            </div>
-            <div class="m-t-30">
-                <div class="d-flex m-b-20">
-                    <div class="text-center">
-                        <nz-avatar nzText="17" class="ant-avatar-blue font-size-20" nzShape="square" nzSize="large"></nz-avatar>
-                    </div>
-                    <div class="m-l-20">
-                        <h5 class="m-b-0">
-                            <a class="text-dark">UI Discussion</a>
-                        </h5>
-                        <p class="m-b-0">Execute core that as result.</p>
-                    </div>
-                </div>
-                <div class="d-flex m-b-20">
-                    <div class="text-center">
-                        <nz-avatar nzText="21" class="ant-avatar-cyan font-size-20" nzShape="square" nzSize="large"></nz-avatar>
-                    </div>
-                    <div class="m-l-20">
-                        <h5 class="m-b-0">
-                            <a class="text-dark">Project Schdule</a>
-                        </h5>
-                        <p class="m-b-0">Special cloth alert always.</p>
-                    </div>
-                </div>
-                <div class="d-flex">
-                    <div class="text-center">
-                        <nz-avatar nzText="25" class="ant-avatar-gold font-size-20" nzShape="square" nzSize="large"></nz-avatar>
-                    </div>
-                    <div class="m-l-20">
-                        <h5 class="m-b-0">
-                            <a class="text-dark">Design Discussion</a>
-                        </h5>
-                        <p class="m-b-0">Let us wax poetic about.</p>
-                    </div>
-                </div>
-            </div> 
-        </nz-card>
-    </div>
-</div> -->
+</div>
+
 <!-- <div class="row">
     <div class="col-lg-8">
         <nz-card>
