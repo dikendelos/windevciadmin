@@ -13,9 +13,9 @@
     <form nz-form [formGroup]="dataForm" nzLayout="vertical" (ngSubmit)="addRow()">
         <div class="row">
             <nz-form-item class="col-md-3">
-                <nz-form-label nzRequired nzFor="nom_produit">Designation</nz-form-label>
-                <nz-form-control nzErrorTip="Veuillez saisir la designation!">
-                    <input type="text" nz-input formControlName="nom_produit" placeholder="Designation">
+                <nz-form-label nzRequired nzFor="extrat_titre">Extrait de titre</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir l'extrait de titre!">
+                    <input type="text" nz-input formControlName="extrat_titre" placeholder="Extrait de titre">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item class="col-md-3">
@@ -25,21 +25,37 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item class="col-md-3">
-                <nz-form-label nzRequired nzFor="description">Licence</nz-form-label>
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence"  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue" >
-                    <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
-                </nz-select>
-                <input type="hidden" [(ngModel)]="selectedValue" formControlName="licence_id" >
+                <nz-form-label nzRequired nzFor="reference">référence</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir la référence!">
+                    <input type="text" nz-input formControlName="reference" placeholder="référence">
+                </nz-form-control>
             </nz-form-item>
             <nz-form-item class="col-md-3">
-                <nz-form-label nzRequired nzFor="extrat_titre">Extrait de titre</nz-form-label>
-                <nz-form-control nzErrorTip="Veuillez saisir l'extrait de titre!">
-                    <input type="text" nz-input formControlName="extrat_titre" placeholder="Extrait de titre">
+                <nz-form-label nzRequired nzFor="prix_euro">Prix en euro</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir le prix en euro!">
+                    <input type="text" nz-input formControlName="prix_euro" placeholder="Prix en euro">
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div class="row">&nbsp;</div>
-        <button style="position:absolute; right: 25px; bottom: 10px;" nz-button nzType="primary">Ajouter</button>
+        <div class="row">
+            <nz-form-item class="col-md-3">
+                <nz-form-label nzRequired nzFor="prix_fcfa">Prix en fcfa</nz-form-label>
+                <nz-form-control nzErrorTip="Veuillez saisir le prix en fcfa!">
+                    <input type="text" nz-input formControlName="prix_fcfa" placeholder="Prix en fcfa">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="col-md-3">
+                <nz-form-label nzRequired nzFor="produit_id">Produit</nz-form-label>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le produit"  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue" >
+                    <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                </nz-select>
+                <input type="hidden" [(ngModel)]="selectedValue" formControlName="produit_id" >
+            </nz-form-item>
+            <nz-form-item class="col-md">
+                <button style="position:absolute; right: 25px; bottom: 10px;" nz-button nzType="primary">Ajouter</button>
+            </nz-form-item>
+        </div>
+        
         <!-- <div class="row">
             <nz-form-item class="col">
                 <button style="position:absolute; right: 10px;" nz-button nzType="primary">Ajouter</button>
@@ -55,10 +71,10 @@
                 <tr>
                     <!-- <th nzWidth="25%" >Id</th> -->
                     <th nzWidth="25%">Extrait de titre</th>
-                    <th nzWidth="25%">description</th>
-                    <th nzWidth="25%">reference</th>
-                    <th nzWidth="25%">prix en euro</th>
-                    <th nzWidth="25%">prix en fcfa</th>
+                    <th nzWidth="25%">Description</th>
+                    <th nzWidth="25%">Référence</th>
+                    <th nzWidth="25%">Prix en euro</th>
+                    <th nzWidth="25%">Prix en fcfa</th>
                     <th nzWidth="25%">Produit</th>
                     <th nzWidth="10%">Action</th>
                 </tr>
@@ -82,7 +98,7 @@
                         <td>{{ data.prix_fcfa }}</td>
                         <td>{{ data.produit }}</td>
                         <td>
-                            <a (click)="startEdit(data.id)">Edit</a> &nbsp;
+                            <a (click)="startEdit(data.id)"><i nz-icon nzType="edit" nzTheme="outline"></i></a> &nbsp;
                             <a nz-popconfirm nzPopconfirmTitle="Sure to delete?"
                                 (nzOnConfirm)="deleteRow(data.id)">Delete</a>
                         </td>

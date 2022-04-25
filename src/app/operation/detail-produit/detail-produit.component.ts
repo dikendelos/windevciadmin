@@ -37,7 +37,7 @@ export class DetailProduitComponent implements OnInit {
     listOfOption: Array<{ value: number; text: string }> = [];
     nzFilterOption = () => true;
     // End variable proruits
-    T_licence = [];
+    T_produit = [];
 
 
 
@@ -72,7 +72,7 @@ export class DetailProduitComponent implements OnInit {
 
     setValeurAffichee(id, id_ligne) {
         console.log('even :: ', id, id_ligne);
-        const obj = this.T_licence.find(l => l.id == id)
+        const obj = this.T_produit.find(l => l.id == id)
         console.log('obj : ', obj)
         console.log('data : : ', this.editCache[id_ligne].data)
         this.editCache[id_ligne].data.lience = obj.libelle
@@ -97,13 +97,15 @@ export class DetailProduitComponent implements OnInit {
     ngOnInit(): void {
         this.dataForm = this.fb.group({
             extrat_titre: [null, [Validators.required]],
-            nom_produit: [null, [Validators.required]],
             description: [null, [Validators.required]],
-            licence_id: [null, [Validators.required]]
+            reference: [null, [Validators.required]],
+            prix_euro: [null, [Validators.required]],
+            prix_fcfa: [null, [Validators.required]],
+            produit_id: [null, [Validators.required]]
         });
 
-        this.getAllLicence()
-        this.getProduits();
+        this.getProduits()
+        this.getProduitDetail();
     }
 
     addRow(): void {
@@ -124,7 +126,7 @@ export class DetailProduitComponent implements OnInit {
 
     }
 
-    getProduits(): void {
+    getProduitDetail(): void {
         this.produitDetailService.getAll()
             .pipe(first())
             .subscribe({
@@ -143,23 +145,22 @@ export class DetailProduitComponent implements OnInit {
             });
     }
 
-    getAllLicence(): void {
-        this.LicenceService.getAll()
+    getProduits(): void {
+        this.produitService.getAll()
             .pipe(first())
             .subscribe({
                 next: (resp) => {
                     console.log('response : ', resp);
                     if (resp.status !== 200) {
-                        console.log('licence : ', resp);
+                        console.log('response : ', resp);
                         return;
                     }
-                    // {id: 1, libelle: 'Licences simples', description: 'Licences simples'}
                     const listOfOption: Array<{ value: number; text: string }> = [];
-                    this.T_licence = resp.contenu;
+                    this.T_produit = resp.contenu;
                     resp.contenu.forEach(item => {
                         listOfOption.push({
                             value: item.id,
-                            text: item.libelle
+                            text: item.nom_produit
                         });
                     });
                     this.listOfOption = listOfOption;
