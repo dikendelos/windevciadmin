@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ThemeConstantService } from '../../shared/services/theme-constant.service';
 
 import { LicenceService } from 'src/app/shared/services/licence/licence.service';
-import { Licence } from 'src/app/shared/interfaces/perso/licence.type';
+import { Licence } from 'src/app/shared/interfaces/perso/structure';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 

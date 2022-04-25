@@ -3,8 +3,8 @@ import { ThemeConstantService } from '../../shared/services/theme-constant.servi
 
 import { LicenceService } from 'src/app/shared/services/licence/licence.service';
 import { ProduitService } from 'src/app/shared/services/produit/produit.service';
-import { Licence } from 'src/app/shared/interfaces/perso/licence.type';
-import { Produit } from 'src/app/shared/interfaces/perso/produit.type';
+// import { Licence } from 'src/app/shared/interfaces/perso/licence.type';
+import { Produit } from 'src/app/shared/interfaces/perso/structure';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -88,7 +88,7 @@ export class ProduitsComponent implements OnInit {
 
     deleteRow(id: string): void {
         console.log('id : ', id);
-        this.deleteLicence(id);
+        this.deleteProduit(id);
     }
 
     ngOnInit(): void {
@@ -114,11 +114,10 @@ export class ProduitsComponent implements OnInit {
             return;
         }
 
-        const data = {
-            "libelle": this.f.libelle.value,
-            "description": this.f.description.value
-        }
-        this.addLicence(data)
+        const data = this.dataForm.value;
+        console.log('dataToPost : ', data);
+
+        this.addProduit(data)
 
     }
 
@@ -168,8 +167,8 @@ export class ProduitsComponent implements OnInit {
             });
     }
 
-    addLicence(data): void {
-        this.LicenceService.add(data)
+    addProduit(data): void {
+        this.produitService.add(data)
             .pipe(first())
             .subscribe({
                 next: (resp) => {
@@ -221,8 +220,8 @@ export class ProduitsComponent implements OnInit {
             });
     }
 
-    updateLicence(id, data): void {
-        this.LicenceService.update(id, data)
+    deleteProduit(id): void {
+        this.produitService.delete(id)
             .pipe(first())
             .subscribe({
                 next: (resp) => {
@@ -231,26 +230,8 @@ export class ProduitsComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
-                    // 
-                    this.editCache[id].edit = false;
-                },
-                error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
-                    this.editCache[id].edit = false;
-                }
-            });
-    }
-
-    deleteLicence(id): void {
-        this.LicenceService.delete(id)
-            .pipe(first())
-            .subscribe({
-                next: (resp) => {
-                    console.log('response : ', resp);
-                    if (resp.status !== 200) {
-                        console.log('resp : ', resp);
-                        return;
-                    }
+                    console.log('listOfData : ', this.listOfData);
+                    console.log('id rech : ', id);
                     this.listOfData = this.listOfData.filter(d => d.id.toString() != id);
                 },
                 error: error => {
@@ -258,7 +239,6 @@ export class ProduitsComponent implements OnInit {
                 }
             });
     }
-
 
     get f() { return this.dataForm.controls }
 

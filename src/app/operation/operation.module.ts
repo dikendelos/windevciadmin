@@ -42,6 +42,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProduitsComponent } from './produits/produits.component';
+import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 
 const antdModule = [
     NzButtonModule,
@@ -86,7 +87,8 @@ const antdModule = [
     declarations: [
         // ProjectsDashboardComponent,
         LicencesComponent,
-        ProduitsComponent
+        ProduitsComponent,
+        DetailProduitComponent
 
     ],
     providers: [
