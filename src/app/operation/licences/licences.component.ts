@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ThemeConstantService } from '../../shared/services/theme-constant.service';
+// import { ThemeConstantService } from '../../shared/services/theme-constant.service';
 
 import { LicenceService } from 'src/app/shared/services/licence/licence.service';
 import { Licence } from 'src/app/shared/interfaces/perso/structure';
@@ -175,7 +175,10 @@ export class LicencesComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
-                    this.listOfData = this.listOfData.filter(d => d.id.toString() != id);
+                    this.listOfData = this.listOfData.filter((d) => {
+                        console.log("d : ", d.id)
+                        return d.id.toString() != id
+                    });
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);

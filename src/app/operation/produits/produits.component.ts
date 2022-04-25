@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ThemeConstantService } from '../../shared/services/theme-constant.service';
+// import { ThemeConstantService } from '../../shared/services/theme-constant.service';
 
 import { LicenceService } from 'src/app/shared/services/licence/licence.service';
 import { ProduitService } from 'src/app/shared/services/produit/produit.service';

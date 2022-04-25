@@ -22,6 +22,12 @@ export class HeaderComponent {
     ngOnInit(): void {
         this.themeService.isMenuFoldedChanges.subscribe(isFolded => this.isFolded = isFolded);
         this.themeService.isExpandChanges.subscribe(isExpand => this.isExpand = isExpand);
+        // this.changeHeaderColorBlue()
+    }
+
+
+    changeHeaderColorBlue() {
+        this.themeService.changeHeaderBlue()
     }
 
     toggleFold() {

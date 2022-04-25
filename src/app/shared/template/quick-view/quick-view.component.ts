@@ -20,10 +20,15 @@ export class QuickViewComponent {
         this.themeService.isMenuFoldedChanges.subscribe(isFolded => this.isFolded = isFolded);
         this.themeService.isSideNavDarkChanges.subscribe(isDark => this.isSideNavDark = isDark);
         this.themeService.selectedHeaderColor.subscribe(color => this.selectedHeaderColor = color);
+        // this.changeHeaderColorBlue()
     }
 
     changeHeaderColor() {
         this.themeService.changeHeaderColor(this.selectedHeaderColor)
+    }
+
+    changeHeaderColorBlue() {
+        this.themeService.changeHeaderBlue()
     }
 
     toggleSideNavDark() {

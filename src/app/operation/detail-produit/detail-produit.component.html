@@ -46,16 +46,18 @@
             </nz-form-item>
             <nz-form-item class="col-md-3">
                 <nz-form-label nzRequired nzFor="produit_id">Produit</nz-form-label>
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le produit"  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue" >
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le produit"
+                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue">
                     <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
                 </nz-select>
-                <input type="hidden" [(ngModel)]="selectedValue" formControlName="produit_id" >
+                <input type="hidden" [(ngModel)]="selectedValue" formControlName="produit_id">
             </nz-form-item>
             <nz-form-item class="col-md">
-                <button style="position:absolute; right: 25px; bottom: 10px;" nz-button nzType="primary">Ajouter</button>
+                <button style="position:absolute; right: 25px; bottom: 10px;" nz-button
+                    nzType="primary">Ajouter</button>
             </nz-form-item>
         </div>
-        
+
         <!-- <div class="row">
             <nz-form-item class="col">
                 <button style="position:absolute; right: 10px;" nz-button nzType="primary">Ajouter</button>
@@ -73,8 +75,8 @@
                     <th nzWidth="25%">Extrait de titre</th>
                     <th nzWidth="25%">Description</th>
                     <th nzWidth="25%">Référence</th>
-                    <th nzWidth="25%">Prix en euro</th>
-                    <th nzWidth="25%">Prix en fcfa</th>
+                    <th nzWidth="15%">Prix en euro</th>
+                    <th nzWidth="15%">Prix en fcfa</th>
                     <th nzWidth="25%">Produit</th>
                     <th nzWidth="10%">Action</th>
                 </tr>
@@ -99,26 +101,33 @@
                         <td>{{ data.produit }}</td>
                         <td>
                             <a (click)="startEdit(data.id)"><i nz-icon nzType="edit" nzTheme="outline"></i></a> &nbsp;
-                            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?"
-                                (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+                            <a nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                                (nzOnConfirm)="deleteRow(data.id)" nzOkText="ok" nzCancelText="annuler"><i nz-icon
+                                    nzType="delete" nzTheme="outline"></i></a>
                         </td>
                     </ng-container>
                     <ng-template #editTemplate>
                         <!-- <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.id" /></td> -->
-                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.nom_produit" /></td>
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.extrat_titre" /></td>
                         <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.description" /></td>
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.reference" /></td>
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.prix_euro" /></td>
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.prix_fcfa" /></td>
                         <td>
                             <!-- <input type="text" nz-input [(ngModel)]="editCache[data.id].data.licence_id" /> -->
-                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence" 
-                                [(ngModel)]="editCache[data.id].data.licence_id" (ngModelChange)="setValeurAffichee($event, data.id)">
-                                <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le produit"
+                                [(ngModel)]="editCache[data.id].data.produit_id"
+                                (ngModelChange)="setValeurAffichee($event, data.id)">
+                                <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value">
+                                </nz-option>
                             </nz-select>
-                        </td> 
-                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.extrat_titre" /></td> 
+                        </td>
                         <td>
-                            <a (click)="saveEdit(data.id)" class="save">Save</a>
-                            <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
-                                (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+                            <a (click)="saveEdit(data.id)" class="save"><i nz-icon nzType="save"
+                                    nzTheme="outline"></i></a>
+                            <a nz-popconfirm nzPopconfirmTitle="Vous êtes sûr d'annuler?"
+                                (nzOnConfirm)="cancelEdit(data.id)" nzOkText="ok" nzCancelText="annuler"><i nz-icon
+                                    nzType="close" nzTheme="outline"></i></a>
                         </td>
                     </ng-template>
                 </tr>

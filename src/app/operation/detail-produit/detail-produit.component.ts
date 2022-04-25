@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ThemeConstantService } from '../../shared/services/theme-constant.service';
+// import { ThemeConstantService } from '../../shared/services/theme-constant.service';
 
 import { LicenceService } from 'src/app/shared/services/licence/licence.service';
 import { ProduitService } from 'src/app/shared/services/produit/produit.service';
@@ -41,8 +41,8 @@ export class DetailProduitComponent implements OnInit {
 
 
 
-    editCache: { [key: string]: { edit: boolean; data: Produit } } = {};
-    listOfData: Produit[] = [];
+    editCache: { [key: string]: { edit: boolean; data: DetailProduit } } = {};
+    listOfData: DetailProduit[] = [];
     dataForm: FormGroup;
 
     startEdit(id: string): void {
@@ -67,7 +67,7 @@ export class DetailProduitComponent implements OnInit {
         console.log('data adding : ', this.editCache[id].data);
 
         Object.assign(this.listOfData[index], this.editCache[id].data);
-        this.updateProduit(id, this.editCache[id].data)
+        this.updateDetailProduit(id, this.editCache[id].data)
     }
 
     setValeurAffichee(id, id_ligne) {
@@ -75,7 +75,7 @@ export class DetailProduitComponent implements OnInit {
         const obj = this.T_produit.find(l => l.id == id)
         console.log('obj : ', obj)
         console.log('data : : ', this.editCache[id_ligne].data)
-        this.editCache[id_ligne].data.lience = obj.libelle
+        this.editCache[id_ligne].data.produit = obj.nom_produit
         //  = 
         // libelle
     }
@@ -91,7 +91,7 @@ export class DetailProduitComponent implements OnInit {
 
     deleteRow(id: string): void {
         console.log('id : ', id);
-        this.deleteProduit(id);
+        this.deleteDetailProduit(id);
     }
 
     ngOnInit(): void {
@@ -118,11 +118,9 @@ export class DetailProduitComponent implements OnInit {
             console.log('statut formulaire : ', this.dataForm.status);
             return;
         }
+        console.log('dataToPost : ', this.dataForm.value);
 
-        const data = this.dataForm.value;
-        console.log('dataToPost : ', data);
-
-        this.addProduit(data)
+        this.addProduit(this.dataForm.value)
 
     }
 
@@ -172,7 +170,7 @@ export class DetailProduitComponent implements OnInit {
     }
 
     addProduit(data): void {
-        this.produitService.add(data)
+        this.produitDetailService.add(data)
             .pipe(first())
             .subscribe({
                 next: (resp) => {
@@ -203,8 +201,8 @@ export class DetailProduitComponent implements OnInit {
             });
     }
 
-    updateProduit(id, data): void {
-        this.produitService.update(id, data)
+    updateDetailProduit(id, data): void {
+        this.produitDetailService.update(id, data)
             .pipe(first())
             .subscribe({
                 next: (resp) => {
@@ -224,8 +222,8 @@ export class DetailProduitComponent implements OnInit {
             });
     }
 
-    deleteProduit(id): void {
-        this.produitService.delete(id)
+    deleteDetailProduit(id): void {
+        this.produitDetailService.delete(id)
             .pipe(first())
             .subscribe({
                 next: (resp) => {
@@ -236,7 +234,10 @@ export class DetailProduitComponent implements OnInit {
                     }
                     console.log('listOfData : ', this.listOfData);
                     console.log('id rech : ', id);
-                    this.listOfData = this.listOfData.filter(d => d.id.toString() != id);
+                    this.listOfData = this.listOfData.filter((d) => {
+                        console.log('d.id : ', d.id);
+                        return d.id != id
+                    });
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
