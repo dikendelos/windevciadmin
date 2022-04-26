@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -17,9 +18,18 @@ export class JwtInterceptor implements HttpInterceptor {
                     Authorization: `Bearer ${currentUser.accessToken}`
                 }
             });
-            console.log('secur request : ', request)
+            // console.log('secur request : ', request)
         }
 
-        return next.handle(request);
+        return next.handle(request).pipe(
+            catchError((error: any): Observable<HttpEvent<any>> => {
+              console.log(error)
+    
+              if(error.status === 401){
+                // this.tokenService.clearTokenExpired()
+              }
+              return throwError('Session Expired')
+            })
+          );
     }
 }
