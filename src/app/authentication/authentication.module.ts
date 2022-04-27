@@ -19,13 +19,15 @@ import { SignUp3Component } from './sign-up-3/sign-up-3.component';
 import { Error1Component } from './error-1/error-1.component';
 import { Error2Component } from './error-2/error-2.component';
 import { AuthenticationService } from '../shared/services/authentication.service';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 
-const antdModule= [
+const antdModule = [
     NzFormModule,
     NzInputModule,
     NzButtonModule,
     NzCardModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzAlertModule
 ]
 
 @NgModule({
@@ -51,4 +53,4 @@ const antdModule= [
     ],
 })
 
-export class AuthenticationModule {}
+export class AuthenticationModule { }

@@ -22,6 +22,9 @@ import { JwtInterceptor } from './shared/interceptor/token.interceptor';
 import { GlobalHttpInterceptor } from './shared/interceptor/global-http-interceptor';
 import { GlobalErrorHandler } from './shared/interceptor/global-error-handler';
 import { AuthenticationService } from './shared/services/authentication.service';
+import { ErrorHandlerService } from './shared/services/error-handler.service';
+import { NotifService } from './shared/services/notif.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 registerLocaleData(en);
 
@@ -54,17 +57,20 @@ registerLocaleData(en);
             useClass: JwtInterceptor,
             multi: true
         },
-        {
-            provide: ErrorHandler,
-            useClass: GlobalErrorHandler
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: GlobalHttpInterceptor,
-            multi: true
-        },
+        // {
+        //     provide: ErrorHandler,
+        //     useClass: GlobalErrorHandler
+        // },
+        // {
+        //     provide: HTTP_INTERCEPTORS,
+        //     useClass: GlobalHttpInterceptor,
+        //     multi: true
+        // },
         ThemeConstantService,
-        AuthenticationService
+        AuthenticationService,
+        ErrorHandlerService,
+        NotifService,
+        NzMessageService
     ],
     bootstrap: [AppComponent]
 })

@@ -7,6 +7,7 @@ import { ProduitService } from 'src/app/shared/services/produit/produit.service'
 import { Produit } from 'src/app/shared/interfaces/perso/structure';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotifService } from 'src/app/shared/services/notif.service';
 
 
 @Component({
@@ -27,10 +28,13 @@ export class ProduitsComponent implements OnInit {
     constructor(
         private LicenceService: LicenceService,
         private produitService: ProduitService,
+        private notif: NotifService,
         private fb: FormBuilder,
     ) { }
     // Variable proruits
     selectedValue = null;
+    invalid = 'FormControl';
+    loading = false
     listOfOption: Array<{ value: number; text: string }> = [];
     nzFilterOption = () => true;
     // End variable proruits
@@ -111,8 +115,10 @@ export class ProduitsComponent implements OnInit {
 
         if (this.dataForm.invalid) {
             console.log('statut formulaire : ', this.dataForm.status);
+            this.invalid = 'error'
             return;
         }
+
 
         const data = this.dataForm.value;
         console.log('dataToPost : ', data);
@@ -123,7 +129,7 @@ export class ProduitsComponent implements OnInit {
 
     getProduits(): void {
         this.produitService.getAll()
-            .pipe(first())
+            // .pipe(first())
             .subscribe({
                 next: (resp) => {
                     console.log('response : ', resp);
@@ -135,21 +141,24 @@ export class ProduitsComponent implements OnInit {
                     this.updateEditCache();
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    console.log(`Erreur : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }
 
     getAllLicence(): void {
         this.LicenceService.getAll()
-            .pipe(first())
+            // .pipe(first())
             .subscribe({
                 next: (resp) => {
+                    this.loading = false
                     console.log('response : ', resp);
                     if (resp.status !== 200) {
                         console.log('licence : ', resp);
                         return;
                     }
+
                     // {id: 1, libelle: 'Licences simples', description: 'Licences simples'}
                     const listOfOption: Array<{ value: number; text: string }> = [];
                     this.T_licence = resp.contenu;
@@ -162,14 +171,15 @@ export class ProduitsComponent implements OnInit {
                     this.listOfOption = listOfOption;
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    console.log(`Erreur : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }
 
     addProduit(data): void {
         this.produitService.add(data)
-            .pipe(first())
+            // .pipe(first())
             .subscribe({
                 next: (resp) => {
                     console.log('response : ', resp);
@@ -178,6 +188,7 @@ export class ProduitsComponent implements OnInit {
                         alert('resp ')
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     const dataAdded = resp.contenu[0]
                     console.log('dataAdded : ', dataAdded)
                     this.listOfData = [
@@ -194,6 +205,7 @@ export class ProduitsComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                     // this.editCache[id].edit = false;
                 }
             });
@@ -209,13 +221,14 @@ export class ProduitsComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
-                    //
+                    this.notif.affiche('success', resp.message)
                     // this.getProduits()
                     this.editCache[id].edit = false;
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
-                    this.editCache[id].edit = false;
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
+                    // this.editCache[id].edit = false;
                 }
             });
     }
@@ -230,12 +243,14 @@ export class ProduitsComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     console.log('listOfData : ', this.listOfData);
                     console.log('id rech : ', id);
                     this.listOfData = this.listOfData.filter(d => d.id.toString() != id);
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    console.log(`Erreur : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }

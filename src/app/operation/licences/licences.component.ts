@@ -5,6 +5,7 @@ import { LicenceService } from 'src/app/shared/services/licence/licence.service'
 import { Licence } from 'src/app/shared/interfaces/perso/structure';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotifService } from 'src/app/shared/services/notif.service';
 
 
 @Component({
@@ -20,10 +21,11 @@ export class LicencesComponent implements OnInit {
 
     constructor(
         private LicenceService: LicenceService,
+        private notif: NotifService,
         private fb: FormBuilder,
     ) { }
 
-
+    loading = false;
     editCache: { [key: string]: { edit: boolean; data: Licence } } = {};
     listOfData: Licence[] = [];
     dataForm: FormGroup;
@@ -109,21 +111,23 @@ export class LicencesComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }
 
     addLicence(data): void {
+        this.loading = true
         this.LicenceService.add(data)
-            .pipe(first())
             .subscribe({
                 next: (resp) => {
+                    this.loading = false
                     console.log('response : ', resp);
                     if (resp.status !== 201) {
                         console.log('resp : ', resp);
-                        alert('resp ')
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     const dataAdded = resp.contenu[0]
                     console.log('dataAdded : ', dataAdded)
                     this.listOfData = [
@@ -139,7 +143,9 @@ export class LicencesComponent implements OnInit {
                     // this.editCache[dataAdded.id].edit = false;
                 },
                 error: error => {
+                    this.loading = false
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                     // this.editCache[id].edit = false;
                 }
             });
@@ -147,7 +153,7 @@ export class LicencesComponent implements OnInit {
 
     updateLicence(id, data): void {
         this.LicenceService.update(id, data)
-            .pipe(first())
+            // .pipe(first())
             .subscribe({
                 next: (resp) => {
                     console.log('response : ', resp);
@@ -155,12 +161,14 @@ export class LicencesComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     // 
                     this.editCache[id].edit = false;
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
-                    this.editCache[id].edit = false;
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
+                    // this.editCache[id].edit = false;
                 }
             });
     }
@@ -175,6 +183,7 @@ export class LicencesComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     this.listOfData = this.listOfData.filter((d) => {
                         console.log("d : ", d.id)
                         return d.id.toString() != id
@@ -182,6 +191,7 @@ export class LicencesComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }

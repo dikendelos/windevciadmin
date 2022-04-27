@@ -9,6 +9,7 @@ import { DetailProduit } from 'src/app/shared/interfaces/perso/structure';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProduitDetailService } from 'src/app/shared/services/produit-detail/produit-detail.service';
+import { NotifService } from 'src/app/shared/services/notif.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ import { ProduitDetailService } from 'src/app/shared/services/produit-detail/pro
 export class DetailProduitComponent implements OnInit {
 
     constructor(
-        private LicenceService: LicenceService,
+        private notif: NotifService,
         private produitService: ProduitService,
         private produitDetailService: ProduitDetailService,
         private fb: FormBuilder,
@@ -126,7 +127,7 @@ export class DetailProduitComponent implements OnInit {
 
     getProduitDetail(): void {
         this.produitDetailService.getAll()
-            .pipe(first())
+            // .pipe(first())
             .subscribe({
                 next: (resp) => {
                     console.log('response : ', resp);
@@ -139,6 +140,7 @@ export class DetailProduitComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }
@@ -165,6 +167,7 @@ export class DetailProduitComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }
@@ -180,6 +183,7 @@ export class DetailProduitComponent implements OnInit {
                         alert('resp ')
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     const dataAdded = resp.contenu[0]
                     console.log('dataAdded : ', dataAdded)
                     this.listOfData = [
@@ -196,6 +200,7 @@ export class DetailProduitComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                     // this.editCache[id].edit = false;
                 }
             });
@@ -211,12 +216,13 @@ export class DetailProduitComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
-                    //
+                    this.notif.affiche('success', resp.message)
                     // this.getProduits()
                     this.editCache[id].edit = false;
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                     this.editCache[id].edit = false;
                 }
             });
@@ -232,6 +238,7 @@ export class DetailProduitComponent implements OnInit {
                         console.log('resp : ', resp);
                         return;
                     }
+                    this.notif.affiche('success', resp.message)
                     console.log('listOfData : ', this.listOfData);
                     console.log('id rech : ', id);
                     this.listOfData = this.listOfData.filter((d) => {
@@ -241,6 +248,7 @@ export class DetailProduitComponent implements OnInit {
                 },
                 error: error => {
                     console.log(`Erreur ${error.status} : `, error);
+                    this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
     }

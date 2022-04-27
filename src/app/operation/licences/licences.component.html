@@ -1,11 +1,11 @@
 <div class="page-header">
     <div class="d-md-flex align-items-md-center justify-content-between">
         <div class="media m-v-10 align-items-center">
-        <!-- <nz-avatar nzIcon="user" [nzSize]="50" nzSrc="assets/images/avatars/thumb-3.jpg"></nz-avatar> -->
-        <div class="media-body m-l-15">
-        <h4 class="m-b-0">Licences</h4>
-        <span class="text-gray">Gestion des licences</span>
-        </div>
+            <!-- <nz-avatar nzIcon="user" [nzSize]="50" nzSrc="assets/images/avatars/thumb-3.jpg"></nz-avatar> -->
+            <div class="media-body m-l-15">
+                <h4 class="m-b-0">Licences</h4>
+                <span class="text-gray">Gestion des licences</span>
+            </div>
         </div>
     </div>
 </div>
@@ -24,7 +24,7 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <button nz-button nzType="primary">Ajouter</button>
+            <button nz-button [nzLoading]="loading" nzType="primary">Ajouter</button>
         </nz-form-item>
     </form>
     <!-- <button nz-button (click)="addRow()" nzType="primary">Ajouter</button> -->

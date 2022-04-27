@@ -7,29 +7,30 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) { }
+  constructor(private authenticationService: AuthenticationService) { }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let currentUser = this.authenticationService.currentUserValue;
-        console.log('currentUser : ', currentUser);
-        if (currentUser && currentUser.accessToken) {
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${currentUser.accessToken}`
-                }
-            });
-            // console.log('secur request : ', request)
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let currentUser = this.authenticationService.currentUserValue;
+    // console.log('currentUser : ', this.authenticationService.currentUserValue);
+    if (currentUser && currentUser.accessToken) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
+      // console.log('secur request : ', request)
+    }
+
+    return next.handle(request).pipe(
+      catchError((error: any) => {
+        console.log('error :: ', error)
+        // 
+        if ([401, 403].includes(error.status) && currentUser) {
+          this.authenticationService.logout()
         }
 
-        return next.handle(request).pipe(
-            catchError((error: any): Observable<HttpEvent<any>> => {
-              console.log(error)
-    
-              if(error.status === 401){
-                // this.tokenService.clearTokenExpired()
-              }
-              return throwError('Session Expired')
-            })
-          );
-    }
+        return throwError('Session Expired')
+      })
+    );
+  }
 }

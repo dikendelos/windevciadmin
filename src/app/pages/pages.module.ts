@@ -78,7 +78,8 @@ const antdModule = [
         BlogPostComponent
     ],
     providers: [
+
     ]
 })
 
-export class PagesModule {}
+export class PagesModule { }

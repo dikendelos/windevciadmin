@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { AfterViewInit, Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -13,6 +13,7 @@ export class Login1Component {
     loginForm: FormGroup;
     loading = false;
     submitted = false;
+    message_show = '';
 
     constructor(
         private fb: FormBuilder,
@@ -27,7 +28,9 @@ export class Login1Component {
             login: [null, [Validators.required]],
             password: [null, [Validators.required]]
         });
+
     }
+
 
     submitForm(): void {
         for (const i in this.loginForm.controls) {
@@ -43,17 +46,19 @@ export class Login1Component {
         this.loading = true;
 
         this.accountService.login(this.f.login.value, this.f.password.value)
-            .pipe(first())
+            // .pipe(first())
             .subscribe({
                 next: (data) => {
-
-                    const returnUrl = 'dashboard/default';
+                    this.loading = false;
+                    this.message_show = '';
+                    const returnUrl = 'operation/licences';
                     console.log('returnUrl : ', returnUrl);
-                    this.router.navigateByUrl(returnUrl);
-                    console.log('data : ', data);
+                    this.router.navigateByUrl(returnUrl)
+                    // this.router.navigateByUrl(returnUrl);
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error.error.message);
+                    // console.log(`Erreur ${error.status} : `, error.error.message);
+                    this.message_show = error.error.message || 'serveur temporairement indisponible !!!';
                     this.loading = false;
                 }
             })

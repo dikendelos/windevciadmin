@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
-// import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
 import { catchError, retry } from 'rxjs/operators';
 
 @Injectable()
 export class GlobalHttpInterceptor implements HttpInterceptor {
-    constructor() { }
+    constructor(private authenticationService: AuthenticationService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
@@ -17,12 +17,17 @@ export class GlobalHttpInterceptor implements HttpInterceptor {
     }
 
     handleError(error: any) {
+        let currentUser = this.authenticationService.currentUserValue;
         if (error.error instanceof ProgressEvent) {
             // Erreur du client
             console.log('Une erreur est survenue : ', error.error.message);
         } else {
             console.error(`Erreur Serveur de type : ${error.status}, ` + `detail : ${error.error.message}`)
         }
+
+        // if ([401, 403].includes(error.status) && currentUser) {
+        //     this.authenticationService.logout()
+        // }
 
         return throwError('Une erreur est survenue, veuillez réessayer plus tard.')
     }

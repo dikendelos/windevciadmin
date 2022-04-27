@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { User } from '../interfaces/user.type';
 import { Token } from '../interfaces/token.type';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ErrorHandlerService } from './error-handler.service';
+
+
 
 const AUTH_API_URL = '/login';
 const REGISTER_API_URL = '/register';
@@ -18,6 +21,7 @@ export class AuthenticationService {
 
     constructor(
         private http: HttpClient,
+        private errorHandlerService: ErrorHandlerService,
         private router: Router
     ) {
         this.currentUserSubject = new BehaviorSubject<Token>(JSON.parse(localStorage.getItem('currentUser')));
@@ -40,13 +44,17 @@ export class AuthenticationService {
                     this.currentUserSubject.next(user);
                 }
                 return user;
-            }));
+            })
+            );
     }
 
     logout() {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
-        this.router.navigate(['/authentication/login-1']);
+        this.router.navigate(['/authentication/login-1'])
+            .then(() => {
+                window.location.reload();
+            });
     }
 
     // getAll() {

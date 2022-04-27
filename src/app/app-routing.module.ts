@@ -16,28 +16,28 @@ const appRoutes: Routes = [
     // },
     {
         path: '',
-        redirectTo: '/dashboard/default',
+        redirectTo: '/operation/licences',
         pathMatch: 'full',
     },
-    { 
-        path: '', 
+    {
+        path: '',
         component: CommonLayoutComponent,
         children: CommonLayout_ROUTES,
         canActivate: [AuthGuard]
     },
-    { 
-        path: '', 
-        component: FullLayoutComponent, 
+    {
+        path: '',
+        component: FullLayoutComponent,
         children: FullLayout_ROUTES
     }
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(appRoutes, { 
+        RouterModule.forRoot(appRoutes, {
             preloadingStrategy: PreloadAllModules,
             anchorScrolling: 'enabled',
-            scrollPositionRestoration: 'enabled' 
+            scrollPositionRestoration: 'enabled'
         })
     ],
     exports: [

@@ -25,11 +25,14 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item class="col-md-3">
-                <nz-form-label nzRequired nzFor="description">Licence</nz-form-label>
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence"  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue" >
-                    <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
-                </nz-select>
-                <input type="hidden" [(ngModel)]="selectedValue" formControlName="licence_id" >
+                <nz-form-label nzRequired nzFor="licence">Licence</nz-form-label>
+                <nz-form-control [nzValidateStatus]="invalid" nzErrorTip="Veuillez saisir la licence!">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence"
+                        [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue">
+                        <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                    </nz-select>
+                    <input type="hidden" [(ngModel)]="selectedValue" formControlName="licence_id">
+                </nz-form-control>
             </nz-form-item>
             <nz-form-item class="col-md-3">
                 <nz-form-label nzRequired nzFor="extrat_titre">Extrait de titre</nz-form-label>
@@ -39,7 +42,8 @@
             </nz-form-item>
         </div>
         <div class="row">&nbsp;</div>
-        <button style="position:absolute; right: 25px; bottom: 10px;" nz-button nzType="primary">Ajouter</button>
+        <button style="position:absolute; right: 25px; bottom: 10px;" [nzLoading]="loading" nz-button
+            nzType="primary">Ajouter</button>
         <!-- <div class="row">
             <nz-form-item class="col">
                 <button style="position:absolute; right: 10px;" nz-button nzType="primary">Ajouter</button>
@@ -81,12 +85,14 @@
                         <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.description" /></td>
                         <td>
                             <!-- <input type="text" nz-input [(ngModel)]="editCache[data.id].data.licence_id" /> -->
-                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence" 
-                                [(ngModel)]="editCache[data.id].data.licence_id" (ngModelChange)="setValeurAffichee($event, data.id)">
-                                <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence"
+                                [(ngModel)]="editCache[data.id].data.licence_id"
+                                (ngModelChange)="setValeurAffichee($event, data.id)">
+                                <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value">
+                                </nz-option>
                             </nz-select>
-                        </td> 
-                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.extrat_titre" /></td> 
+                        </td>
+                        <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.extrat_titre" /></td>
                         <td>
                             <a (click)="saveEdit(data.id)" class="save">Save</a>
                             <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
