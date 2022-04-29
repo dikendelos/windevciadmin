@@ -26,12 +26,13 @@
             </nz-form-item>
             <nz-form-item class="col-md-3">
                 <nz-form-label nzRequired nzFor="licence">Licence</nz-form-label>
-                <nz-form-control [nzValidateStatus]="invalid" nzErrorTip="Veuillez saisir la licence!">
+                <!-- [nzValidateStatus]="invalid" -->
+                <nz-form-control nzErrorTip="Veuillez sélectionner la licence!">
                     <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner la licence"
-                        [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue">
+                        [(ngModel)]="selectedValue" formControlName="licence_id">
                         <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
                     </nz-select>
-                    <input type="hidden" [(ngModel)]="selectedValue" formControlName="licence_id">
+                    <!-- <input type="hidden" [(ngModel)]="selectedValue" formControlName="licence_id"> -->
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item class="col-md-3">
@@ -71,12 +72,14 @@
                         <!-- <td>{{ data.id }}</td> -->
                         <td>{{ data.nom_produit }}</td>
                         <td>{{ data.description }}</td>
-                        <td>{{ data.lience }}</td>
+                        <!-- <td>{{ data.lience  }}</td> -->
+                        <td>{{ this.getLicenceValue(data.licence_id) }}</td>
                         <td>{{ data.extrat_titre }}</td>
                         <td>
-                            <a (click)="startEdit(data.id)">Edit</a> &nbsp;
-                            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?"
-                                (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+                            <a (click)="startEdit(data.id)"><i nz-icon nzType="edit" nzTheme="outline"></i></a> &nbsp;
+                            <a nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                                (nzOnConfirm)="deleteRow(data.id)" nzOkText="ok" nzCancelText="annuler"><i nz-icon
+                                    nzType="delete" nzTheme="outline"></i></a>
                         </td>
                     </ng-container>
                     <ng-template #editTemplate>
@@ -94,9 +97,11 @@
                         </td>
                         <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.extrat_titre" /></td>
                         <td>
-                            <a (click)="saveEdit(data.id)" class="save">Save</a>
-                            <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
-                                (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+                            <a (click)="saveEdit(data.id)" class="save"><i nz-icon nzType="save"
+                                    nzTheme="outline"></i></a>
+                            <a nz-popconfirm nzPopconfirmTitle="Vous êtes sûr d'annuler?" nzOkText="ok"
+                                nzCancelText="annuler" (nzOnConfirm)="cancelEdit(data.id)"><i nz-icon nzType="close"
+                                    nzTheme="outline"></i></a>
                         </td>
                     </ng-template>
                 </tr>

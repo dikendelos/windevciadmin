@@ -71,6 +71,11 @@ export class ProduitsComponent implements OnInit {
         this.updateProduit(id, this.editCache[id].data)
     }
 
+    getLicenceValue(id) {
+        const obj = this.T_licence.find(l => l.id == id)
+        return obj.libelle || null
+    }
+
     setValeurAffichee(id, id_ligne) {
         console.log('even :: ', id, id_ligne);
         const obj = this.T_licence.find(l => l.id == id)
@@ -105,6 +110,7 @@ export class ProduitsComponent implements OnInit {
 
         this.getAllLicence()
         this.getProduits();
+
     }
 
     addRow(): void {
@@ -115,7 +121,7 @@ export class ProduitsComponent implements OnInit {
 
         if (this.dataForm.invalid) {
             console.log('statut formulaire : ', this.dataForm.status);
-            this.invalid = 'error'
+            // this.invalid = 'error'
             return;
         }
 
@@ -169,6 +175,7 @@ export class ProduitsComponent implements OnInit {
                         });
                     });
                     this.listOfOption = listOfOption;
+                    console.log('Valeur de licence  :: ', this.getLicenceValue(2));
                 },
                 error: error => {
                     console.log(`Erreur : `, error);

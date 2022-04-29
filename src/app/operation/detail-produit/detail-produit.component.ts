@@ -47,7 +47,7 @@ export class DetailProduitComponent implements OnInit {
     dataForm: FormGroup;
 
     startEdit(id: string): void {
-        console.log('data.id : ', id);
+        // console.log('data.id : ', id);
         this.editCache[id].edit = true;
     }
 
@@ -60,25 +60,33 @@ export class DetailProduitComponent implements OnInit {
     }
 
     saveEdit(id: string): void {
-        console.log('index : ', id);
+        // console.log('index : ', id);
         const index = this.listOfData.findIndex((item) => {
             // console.log('item ==> ', item);
             return item.id.toString() == id
         });
-        console.log('data adding : ', this.editCache[id].data);
+        // console.log('data adding : ', this.editCache[id].data);
 
         Object.assign(this.listOfData[index], this.editCache[id].data);
         this.updateDetailProduit(id, this.editCache[id].data)
     }
 
     setValeurAffichee(id, id_ligne) {
-        console.log('even :: ', id, id_ligne);
+        // console.log('even :: ', id, id_ligne);
         const obj = this.T_produit.find(l => l.id == id)
-        console.log('obj : ', obj)
-        console.log('data : : ', this.editCache[id_ligne].data)
+        // console.log('obj : ', obj)
+        // console.log('data : : ', this.editCache[id_ligne].data)
         this.editCache[id_ligne].data.produit = obj.nom_produit
         //  = 
         // libelle
+    }
+
+    getProduitValue(id) {
+        // console.log('id produit : ', id);
+        const obj = this.T_produit.find(p => p.id == id)
+        if (!obj) return ''
+        // console.log('obj : ', obj);
+        return obj.nom_produit || ''
     }
 
     updateEditCache(): void {
@@ -91,7 +99,7 @@ export class DetailProduitComponent implements OnInit {
     }
 
     deleteRow(id: string): void {
-        console.log('id : ', id);
+        // console.log('id : ', id);
         this.deleteDetailProduit(id);
     }
 
@@ -116,10 +124,10 @@ export class DetailProduitComponent implements OnInit {
         }
 
         if (this.dataForm.invalid) {
-            console.log('statut formulaire : ', this.dataForm.status);
+            // console.log('statut formulaire : ', this.dataForm.status);
             return;
         }
-        console.log('dataToPost : ', this.dataForm.value);
+        // console.log('dataToPost : ', this.dataForm.value);
 
         this.addProduit(this.dataForm.value)
 
@@ -130,16 +138,16 @@ export class DetailProduitComponent implements OnInit {
             // .pipe(first())
             .subscribe({
                 next: (resp) => {
-                    console.log('response : ', resp);
+                    // console.log('response : ', resp);
                     if (resp.status !== 200) {
-                        console.log('response : ', resp);
+                        // console.log('response : ', resp);
                         return;
                     }
                     this.listOfData = resp.contenu;
                     this.updateEditCache();
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    // console.log(`Erreur ${error.status} : `, error);
                     this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
@@ -150,9 +158,9 @@ export class DetailProduitComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: (resp) => {
-                    console.log('response : ', resp);
+                    // console.log('response : ', resp);
                     if (resp.status !== 200) {
-                        console.log('response : ', resp);
+                        // console.log('response : ', resp);
                         return;
                     }
                     const listOfOption: Array<{ value: number; text: string }> = [];
@@ -164,9 +172,10 @@ export class DetailProduitComponent implements OnInit {
                         });
                     });
                     this.listOfOption = listOfOption;
+                    // console.log(this.getProduitValue(15))
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    // console.log(`Erreur ${error.status} : `, error);
                     this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });
@@ -177,29 +186,29 @@ export class DetailProduitComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: (resp) => {
-                    console.log('response : ', resp);
+                    // console.log('response : ', resp);
                     if (resp.status !== 201) {
-                        console.log('resp : ', resp);
+                        // console.log('resp : ', resp);
                         alert('resp ')
                         return;
                     }
                     this.notif.affiche('success', resp.message)
                     const dataAdded = resp.contenu[0]
-                    console.log('dataAdded : ', dataAdded)
+                    // console.log('dataAdded : ', dataAdded)
                     this.listOfData = [
                         ...this.listOfData,
                         dataAdded
                     ];
                     this.dataForm.reset()
 
-                    console.log('listOfData : ', this.listOfData)
+                    // console.log('listOfData : ', this.listOfData)
                     this.updateEditCache();
 
                     // // 
                     // this.editCache[dataAdded.id].edit = false;
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    // console.log(`Erreur ${error.status} : `, error);
                     this.notif.affiche('error', 'Erreur interne du serveur. ')
                     // this.editCache[id].edit = false;
                 }
@@ -211,17 +220,17 @@ export class DetailProduitComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: (resp) => {
-                    console.log('response : ', resp);
+                    // console.log('response : ', resp);
                     if (resp.status !== 200) {
-                        console.log('resp : ', resp);
+                        // console.log('resp : ', resp);
                         return;
                     }
-                    this.notif.affiche('success', resp.message)
+                    // this.notif.affiche('success', resp.message)
                     // this.getProduits()
                     this.editCache[id].edit = false;
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    // console.log(`Erreur ${error.status} : `, error);
                     this.notif.affiche('error', 'Erreur interne du serveur. ')
                     this.editCache[id].edit = false;
                 }
@@ -233,21 +242,21 @@ export class DetailProduitComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: (resp) => {
-                    console.log('response : ', resp);
+                    // console.log('response : ', resp);
                     if (resp.status !== 200) {
-                        console.log('resp : ', resp);
+                        // console.log('resp : ', resp);
                         return;
                     }
                     this.notif.affiche('success', resp.message)
-                    console.log('listOfData : ', this.listOfData);
-                    console.log('id rech : ', id);
+                    // console.log('listOfData : ', this.listOfData);
+                    // console.log('id rech : ', id);
                     this.listOfData = this.listOfData.filter((d) => {
-                        console.log('d.id : ', d.id);
+                        // console.log('d.id : ', d.id);
                         return d.id != id
                     });
                 },
                 error: error => {
-                    console.log(`Erreur ${error.status} : `, error);
+                    // console.log(`Erreur ${error.status} : `, error);
                     this.notif.affiche('error', 'Erreur interne du serveur. ')
                 }
             });

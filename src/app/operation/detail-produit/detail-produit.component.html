@@ -46,11 +46,14 @@
             </nz-form-item>
             <nz-form-item class="col-md-3">
                 <nz-form-label nzRequired nzFor="produit_id">Produit</nz-form-label>
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le produit"
-                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedValue">
-                    <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
-                </nz-select>
-                <input type="hidden" [(ngModel)]="selectedValue" formControlName="produit_id">
+                <nz-form-control nzErrorTip="Veuillez sélectionner le produit!">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le produit"
+                        [(ngModel)]="selectedValue" formControlName="produit_id">
+                        <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+                    </nz-select>
+                </nz-form-control>
+
+                <!-- <input type="hidden" [(ngModel)]="selectedValue" formControlName="produit_id"> -->
             </nz-form-item>
             <nz-form-item class="col-md">
                 <button style="position:absolute; right: 25px; bottom: 10px;" nz-button
@@ -98,7 +101,8 @@
                         <td>{{ data.reference }}</td>
                         <td>{{ data.prix_euro }}</td>
                         <td>{{ data.prix_fcfa }}</td>
-                        <td>{{ data.produit }}</td>
+                        <td>{{ this.getProduitValue(data.produit_id) }}</td>
+                        <!-- <td>{{ data.produit + '' + data.produit_id }}</td> -->
                         <td>
                             <a (click)="startEdit(data.id)"><i nz-icon nzType="edit" nzTheme="outline"></i></a> &nbsp;
                             <a nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
